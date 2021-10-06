@@ -10,7 +10,7 @@
 
 ## About
 
-A repo for the second obligatory assignment in the ML-part of DAT158.
+A repo for the backend of the second obligatory assignment in DAT158.
 
 <p align="center">
 Made by Gruppe 10
