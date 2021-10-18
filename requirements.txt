@@ -8,3 +8,4 @@ MarkupSafe==1.1.1
 python-dotenv==0.10.1
 Werkzeug==0.15.2
 wincertstore==0.2
+Pillow==8.4.0
