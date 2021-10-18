@@ -1,6 +1,12 @@
 from flask import Flask
 app = Flask(__name__)
 
-@app.route('/')
-def hello_world():
-    return 'Hello World!'
+
+@app.route('/api/ml')
+def runModel():
+    arg = request.args.get('arg')
+    return "placeholder"
+
+
+def scaleImage(img):
+    return "placeholder"
