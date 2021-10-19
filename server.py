@@ -9,9 +9,12 @@ CORS(app, support_credentials=True)
 @cross_origin(origin='*')
 def runModel():
     file = request.files['file']
+    print(file)
     preProcessedFile = prepareImage(file)
+    print(preProcessedFile.shape)
     results = placeholderModel(preProcessedFile)
-    return results
+    print(results)
+    return "Something"  # results
 
 
 @app.route('/api/up', methods=['GET'])
