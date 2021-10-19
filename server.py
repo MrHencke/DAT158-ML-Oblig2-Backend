@@ -8,6 +8,7 @@ CORS(app, support_credentials=True)
 @app.route('/api/ml', methods=['POST'])
 @cross_origin(origin='*')
 def runModel():
+    print(request.files)
     file = request.files['file']
     print(file)
     preProcessedFile = prepareImage(file)
