@@ -1,6 +1,9 @@
 from flask import Flask, request
 from scripts.scale import scaleImage
+from flask_cors import CORS
+
 app = Flask(__name__)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 
 @app.route('/api/ml', methods=['POST'])
