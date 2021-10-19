@@ -17,5 +17,8 @@ def isUp():
     return "up"
 
 
+labels = ["T-shirt/top", "Trouser", "Pullover", "Dress",
+          "Coat", "Sandal", "Shirt", "Sneaker", "Bag", "Ankle boot"]
+
 if __name__ == '__main__':
     app.run(debug=True)
