@@ -1,5 +1,5 @@
 from flask_cors import CORS, cross_origin
-from scripts.scale import scaleImage
+from scripts.prepare import prepareImage
 from flask import Flask
 app = Flask(__name__)
 CORS(app, support_credentials=True)
