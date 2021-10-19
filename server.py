@@ -2,8 +2,8 @@ from flask import Flask, request
 from scripts.scale import scaleImage
 #from flask_cors import CORS
 
-
 app = Flask(__name__)
+
 #CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 
@@ -21,3 +21,7 @@ def runModel():
 def isUpText():
     return "The server is up"
     # Use route to check backend is up
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
