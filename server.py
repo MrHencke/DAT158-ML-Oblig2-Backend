@@ -17,7 +17,7 @@ def runModel():
 @app.route('/api/up', methods=['GET'])
 @cross_origin(origin='*')
 def isUp():
-    return 1
+    return "1"
 
 
 def placeholderModel(pf):
