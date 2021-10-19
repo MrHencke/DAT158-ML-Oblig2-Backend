@@ -3,7 +3,7 @@ from scripts.scale import scaleImage
 app = Flask(__name__)
 
 
-@app.route('/api/ml')
+@app.route('/api/ml', method='POST')
 def runModel():
     f = request.files['file']
     scaled = scaleImage(f)
@@ -12,6 +12,11 @@ def runModel():
     return "placeholder"
 
 
-@app.route('/api/up')
+@app.route('/api/up', method='GET')
 def isUp():
     return True
+
+
+@app.route('/api/up-text', method='GET')
+def isUpText():
+    return "The server is up"
