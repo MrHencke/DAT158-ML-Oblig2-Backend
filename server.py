@@ -13,8 +13,8 @@ def runModel():
 
 @app.route('/api/up', methods=['GET'])
 @cross_origin(origin='*')
-def isUpText():
-    return "The server is up"
+def isUp():
+    return "up"
 
 
 if __name__ == '__main__':
