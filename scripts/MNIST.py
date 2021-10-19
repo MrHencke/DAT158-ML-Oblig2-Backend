@@ -27,7 +27,7 @@ def toMNIST_IMG(img):
         for y in range(0, height):
             data_image.append(pixel[y, x])
 
-    outputFile(data_image)
+    #outputFile(data_image)
     return data_image
 
 

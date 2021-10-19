@@ -2,13 +2,15 @@ from PIL import Image
 from MNIST import toMNIST_IMG, toMNIST_PATH
 
 
-def scaleImage(img, test):
+def scaleImage(img, test=False):
     newimg = Image.open(img).convert('L')
     newimg = newimg.resize((28, 28))
+    mnist = toMNIST_IMG(newimg)
+
     if test:
         newimg.save("./test-images/scaled.png")
-        mnist = toMNIST_IMG(newimg)
-        print(mnist)
+    else:
+        return mnist
 
 
 if __name__ == "__main__":

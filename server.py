@@ -1,12 +1,17 @@
-from flask import Flask
+from flask import Flask, request
+from scripts.scale import scaleImage
 app = Flask(__name__)
 
 
 @app.route('/api/ml')
 def runModel():
-    arg = request.args.get('arg')
+    f = request.files['file']
+    scaled = scaleImage(f)
+    #prediction = model.predict(scaled)
+    # return prediction
     return "placeholder"
 
 
-def scaleImage(img):
-    return "placeholder"
+@app.route('/api/up')
+def isUp():
+    return True
