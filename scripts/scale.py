@@ -1,5 +1,5 @@
 from PIL import Image
-from MNIST import toMNIST_IMG, toMNIST_PATH
+from scripts.mnist import toMNIST_IMG
 
 
 def scaleImage(img, test=False):
