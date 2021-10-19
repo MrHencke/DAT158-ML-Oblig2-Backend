@@ -1,41 +1,19 @@
 from PIL import Image
-from array import *
+import numpy as np
 
 
 def toMNIST_IMG(img):
-    data_image = array('B')
-
-    Im = img
-    pixel = Im.load()
-    width, height = Im.size
-    for x in range(0, width):
-        for y in range(0, height):
-            data_image.append(pixel[y, x])
-
-    # outputFile(data_image)
-    return data_image
+    data_array = np.array(img)
+    return data_array
 
 
 def toMNIST_PATH(img):
-    data_image = array('B')
-
     Im = Image.open(img)
-    pixel = Im.load()
-    width, height = Im.size
-    for x in range(0, width):
-        for y in range(0, height):
-            data_image.append(pixel[y, x])
-
-    outputFile(data_image)
-    return data_image
-
-
-def outputFile(file):
-    output_file = open('./test-images/image-idx3-ubyte', 'wb')
-    file.tofile(output_file)
-    output_file.close()
+    data_array = np.array(Im)
+    return data_array
 
 
 if __name__ == "__main__":
-    path = "./test-images/scaled.png"
-    toMNIST_PATH(path)
+    imgpath = "./test-images/scaled.png"
+    savepath = "./test-images/"
+    toMNIST_PATH(imgpath)
