@@ -1,6 +1,6 @@
 from flask_cors import CORS, cross_origin
 from scripts.prepare import prepareImage
-from flask import Flask
+from flask import Flask, request
 app = Flask(__name__)
 CORS(app, support_credentials=True)
 
@@ -8,13 +8,27 @@ CORS(app, support_credentials=True)
 @app.route('/api/ml', methods=['POST'])
 @cross_origin(origin='*')
 def runModel():
-    return "placeholder"
+    file = request.files['file']
+    preProcessedFile = prepareImage(file)
+    results = placeholderModel(preProcessedFile)
+    return results
 
 
 @app.route('/api/up', methods=['GET'])
 @cross_origin(origin='*')
 def isUp():
-    return "up"
+    return 1
+
+
+def placeholderModel(pf):
+    if pf is None:
+        status = "something"
+        certainty = "100%"
+    else:
+        status = "a picture"
+        certainty = "99.99%"
+
+    return {status, certainty}
 
 
 labels = ["T-shirt/top", "Trouser", "Pullover", "Dress",
