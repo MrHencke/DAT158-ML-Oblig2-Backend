@@ -1,12 +1,12 @@
 from flask import Flask, request
-from scripts.scale import scaleImage
+#from scripts.scale import scaleImage
 app = Flask(__name__)
 
 
 @app.route('/api/ml', method='POST')
 def runModel():
     f = request.files['file']
-    scaled = scaleImage(f)
+    #scaled = scaleImage(f)
     #prediction = model.predict(scaled)
     # return prediction
     return "placeholder"
