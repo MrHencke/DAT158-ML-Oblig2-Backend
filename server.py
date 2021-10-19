@@ -23,5 +23,4 @@ def isUpText():
     # Use route to check backend is up
 
 
-if __name__ == '__main__':
-    app.run()
+app.run()
