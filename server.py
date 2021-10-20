@@ -5,7 +5,7 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 
-model = keras.models.load_model("./model/tensor")
+model = keras.models.load_model("./model/keras")
 
 
 app = Flask(__name__)
@@ -18,12 +18,12 @@ def runModel():
     print(request.files)
     file = request.files['file']
     print(file)
+    predicted = predict(file)
+    print(predicted)
     preProcessedFile = prepareImage(file)
-    print(preProcessedFile.shape)
     results = placeholderModel(preProcessedFile)
-    print(results)
     #result = "%s with a %.2f certainty" % labels[results[0]], results[1]
-    return reults  # results
+    return results  # results
 
 
 @app.route('/api/up', methods=['GET'])
