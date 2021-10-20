@@ -49,7 +49,6 @@ def placeholderModel(pf):
     else:
         status = "a picture"
         certainty = "99.99%"
-        predictions = model.predict(pf)
 
     return [status, certainty]  # {np.argmax(predictions[0]), certainty}
 
