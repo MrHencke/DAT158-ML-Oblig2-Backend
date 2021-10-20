@@ -1,10 +1,12 @@
 from flask_cors import CORS, cross_origin
 from scripts.prepare import prepareImage
-from scripts.rwutils import readModel
 from flask import Flask, request
 import numpy as np
+import tensorflow as tf
+from tensorflow import keras
 
-model = readModel("knn.pkl")
+model = keras.models.load_model("./model/tensor")
+
 
 app = Flask(__name__)
 CORS(app, support_credentials=True)
@@ -20,8 +22,8 @@ def runModel():
     print(preProcessedFile.shape)
     results = placeholderModel(preProcessedFile)
     print(results)
-    result = "%s with a %.2f certainty" % labels[results[0]], results[1]
-    return "afafa" # results
+    #result = "%s with a %.2f certainty" % labels[results[0]], results[1]
+    return reults  # results
 
 
 @app.route('/api/up', methods=['GET'])
@@ -29,14 +31,16 @@ def runModel():
 def isUp():
     return "u"
 
+
 def predict(file):
     prepared_file = prepareImage(file)
-    
+
     result = model.predict(prepared_file)
-    
+
     output = {"results": result[0]}
-    
-    return output    
+
+    return output
+
 
 def placeholderModel(pf):
     if pf is None:
@@ -47,7 +51,7 @@ def placeholderModel(pf):
         certainty = "99.99%"
         predictions = model.predict(pf)
 
-    return {np.argmax(predictions[0]), certainty}
+    return [status, certainty]  # {np.argmax(predictions[0]), certainty}
 
 
 labels = ["T-shirt/top", "Trouser", "Pullover", "Dress",
