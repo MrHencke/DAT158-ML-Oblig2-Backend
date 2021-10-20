@@ -38,7 +38,7 @@ def predict(file):
 
     result = model.predict(prepared_file)
     
-    output = {result[0]}
+    output = result[0]
 
     return output
 
