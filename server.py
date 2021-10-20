@@ -24,7 +24,7 @@ def runModel():
     preProcessedFile = prepareImage(file)
     results = placeholderModel(preProcessedFile)
     #result = "%s with a %.2f certainty" % labels[results[0]], results[1]
-    return results  # results
+    return "{} {}".format(results[0], results[1])  # results
 
 
 @app.route('/api/up', methods=['GET'])
@@ -62,7 +62,6 @@ def placeholderModel(pf):
     else:
         status = "a picture"
         certainty = "99.99%"
-        predictions = model.predict(pf)
 
     return [status, certainty]  # {np.argmax(predictions[0]), certainty}
 
