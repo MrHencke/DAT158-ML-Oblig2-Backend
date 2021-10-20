@@ -23,7 +23,7 @@ def runModel():
     preProcessedFile = prepareImage(file)
     results = placeholderModel(preProcessedFile)
     #result = "%s with a %.2f certainty" % labels[results[0]], results[1]
-    return results  # results
+    return "{} {}".format(results[0], results[1])  # results
 
 
 @app.route('/api/up', methods=['GET'])
