@@ -20,7 +20,7 @@ def runModel():
     print(file)
     predicted = predict(file)
     formatted = format(predicted)
-    print(formatted)
+    print(list(formatted))
     preProcessedFile = prepareImage(file)
     results = placeholderModel(preProcessedFile)
     #result = "%s with a %.2f certainty" % labels[results[0]], results[1]
