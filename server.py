@@ -1,6 +1,8 @@
 from flask_cors import CORS, cross_origin
 from scripts.prepare import prepareImage
+from scripts.rwutils import readModel
 from flask import Flask, request
+import numpy as np
 app = Flask(__name__)
 CORS(app, support_credentials=True)
 
@@ -15,7 +17,7 @@ def runModel():
     print(preProcessedFile.shape)
     results = placeholderModel(preProcessedFile)
     print(results)
-    return "Something"  # results
+    return "%s with a %.2f certainty" % labels[results[0]], results[1] # results
 
 
 @app.route('/api/up', methods=['GET'])
@@ -25,14 +27,16 @@ def isUp():
 
 
 def placeholderModel(pf):
+    clf = readModel("knn.pkl")
     if pf is None:
         status = "something"
         certainty = "100%"
     else:
         status = "a picture"
         certainty = "99.99%"
+        predictions = clf.predict(pf)
 
-    return {status, certainty}
+    return {np.argmax(predictions[0]), certainty}
 
 
 labels = ["T-shirt/top", "Trouser", "Pullover", "Dress",
