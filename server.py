@@ -42,17 +42,10 @@ def predict(file):
 
     return output
 
-def format(arr):
-    output = []
-    
+def format(arr):    
     decimals = map(lambda x: x * 100, arr)
     percentages = map(lambda x : "{:2.2f}%".format(x), decimals)
-    
-    
-    
-    for i in range(len(arr)):
-        output.append(zip(percentages, labels))
-    
+    output = zip(percentages, labels)
     return output
 
 def placeholderModel(pf):
