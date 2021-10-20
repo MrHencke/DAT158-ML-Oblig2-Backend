@@ -18,7 +18,7 @@ def runModel():
     results = placeholderModel(preProcessedFile)
     print(results)
     # results
-    return "%s with a %s certainty" % results[0], results[1]
+    return "{} with a {} certainty".format(results[0], results[1])
 
 
 @app.route('/api/up', methods=['GET'])
