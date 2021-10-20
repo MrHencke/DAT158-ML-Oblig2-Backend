@@ -19,7 +19,8 @@ def runModel():
     file = request.files['file']
     print(file)
     predicted = predict(file)
-    print(predicted)
+    formatted = format(predicted)
+    print(formatted)
     preProcessedFile = prepareImage(file)
     results = placeholderModel(preProcessedFile)
     #result = "%s with a %.2f certainty" % labels[results[0]], results[1]
@@ -36,11 +37,23 @@ def predict(file):
     prepared_file = prepareImage(file)
 
     result = model.predict(prepared_file)
-
-    output = {"results": result[0]}
+    
+    output = {result[0]}
 
     return output
 
+def format(arr):
+    output = []
+    
+    decimals = map(lambda x: x * 100, arr)
+    percentages = map(lambda x : "{:2.2f}%".format(x), arr)
+    
+    
+    
+    for i in range(len(arr)):
+        output.append(zip(percentages, labels))
+    
+    return output
 
 def placeholderModel(pf):
     if pf is None:
