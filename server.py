@@ -46,7 +46,7 @@ def format(arr):
     output = []
     
     decimals = map(lambda x: x * 100, arr)
-    percentages = map(lambda x : "{:2.2f}%".format(x), arr)
+    percentages = map(lambda x : "{:2.2f}%".format(x), decimals)
     
     
     
