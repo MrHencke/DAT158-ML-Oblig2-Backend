@@ -12,3 +12,4 @@ Werkzeug
 wincertstore
 Pillow
 flask-cors
+tensorflow
