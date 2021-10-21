@@ -50,13 +50,6 @@ def format(arr):
     
     return output
 
-
-def format2(arr):
-    decimals = map(lambda x: round(x * 100), arr)
-    output = dict(zip(labels, decimals))
-    return output
-
-
 labels = ["T-shirt/top", "Trouser", "Pullover", "Dress",
           "Coat", "Sandal", "Shirt", "Sneaker", "Bag", "Ankle boot"]
 

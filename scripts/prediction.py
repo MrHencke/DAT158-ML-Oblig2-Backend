@@ -1,10 +1,10 @@
 class prediction:
-    def __init__(self, item, score):
-        self.item = item
-        self.score = score
+    def __init__(self, key, data):
+        self.key = key
+        self.data = data
         
     def serialize(self):
         return {
-            "item": self.item,
-            "score": self.score
+            "key": self.key,
+            "data": self.data
         }
