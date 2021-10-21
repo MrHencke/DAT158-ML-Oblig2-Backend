@@ -1,6 +1,6 @@
 from flask_cors import CORS, cross_origin
-from scripts.prepare import prepareImage, toBase64String
-from scripts.prediction import prediction
+from scripts.img_utils import prepareImage, toBase64String
+from scripts.prediction import Prediction
 from flask import Flask, request, jsonify
 import numpy as np
 import tensorflow as tf
@@ -45,8 +45,8 @@ def format(arr):
     decimals = map(lambda x: round((x * 100), 2), arr)
     output = []
     
-    for label, value in zip(labels, decimals):
-        output.append(prediction(label, value).serialize())
+    for key, data in zip(labels, decimals):
+        output.append(Prediction(key, data).serialize())
     
     return output
 
