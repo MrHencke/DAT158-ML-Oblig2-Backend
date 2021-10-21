@@ -48,7 +48,7 @@ def format(arr):
 
 
 def format2(arr):
-    decimals = map(lambda x: x * 100, arr)
+    decimals = map(lambda x: round(x * 100), arr)
     output = dict(zip(labels, decimals))
     return output
 
