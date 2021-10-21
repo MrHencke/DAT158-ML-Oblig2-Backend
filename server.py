@@ -46,7 +46,7 @@ def format(arr):
     output = []
     
     for label, value in zip(labels, decimals):
-        output.append(prediction(label, value))
+        output.append(prediction(label, value).serialize())
     
     return output
 
