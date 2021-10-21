@@ -1,5 +1,6 @@
 from flask_cors import CORS, cross_origin
 from scripts.prepare import prepareImage, toBase64String
+from scripts import prediction
 from flask import Flask, request, jsonify
 import numpy as np
 import tensorflow as tf
@@ -20,7 +21,7 @@ def runModel():
     print(prepared_file)
     predicted = predict(file)
     top_prediction = labels[np.argmax(predicted)]
-    formatted = format2(predicted)
+    formatted = format(predicted)
     return jsonify(top_prediction=top_prediction, certainties=formatted, processed_image=prepared_file)
 
 
@@ -41,9 +42,12 @@ def predict(file):
 
 
 def format(arr):
-    decimals = map(lambda x: x * 100, arr)
-    percentages = map(lambda x: "{:2.2f}%".format(x), decimals)
-    output = dict(zip(labels, percentages))
+    decimals = map(lambda x: round((x * 100), 2), arr)
+    output = []
+    
+    for label, value in zip(labels, decimals):
+        output.append(prediction(label, value))
+    
     return output
 
 
