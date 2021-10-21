@@ -20,7 +20,7 @@ def runModel():
     print(prepared_file)
     predicted = predict(file)
     top_prediction = labels[np.argmax(predicted)]
-    formatted = format(predicted)
+    formatted = format2(predicted)
     return jsonify(top_prediction=top_prediction, certainties=formatted, processed_image=prepared_file)
 
 
@@ -44,6 +44,12 @@ def format(arr):
     decimals = map(lambda x: x * 100, arr)
     percentages = map(lambda x: "{:2.2f}%".format(x), decimals)
     output = dict(zip(labels, percentages))
+    return output
+
+
+def format2(arr):
+    decimals = map(lambda x: x * 100, arr)
+    output = dict(zip(labels, decimals))
     return output
 
 
