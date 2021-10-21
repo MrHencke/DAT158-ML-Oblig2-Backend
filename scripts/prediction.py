@@ -5,6 +5,6 @@ class prediction:
         
     def serialize(self):
         return {
-            "item": self.label,
+            "item": self.item,
             "score": self.score
         }
