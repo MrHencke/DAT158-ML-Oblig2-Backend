@@ -1,6 +1,6 @@
 from flask_cors import CORS, cross_origin
 from scripts.prepare import prepareImage, toBase64String
-from scripts import prediction
+from scripts.prediction import prediction
 from flask import Flask, request, jsonify
 import numpy as np
 import tensorflow as tf
