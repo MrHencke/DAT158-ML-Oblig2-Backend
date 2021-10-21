@@ -3,7 +3,9 @@ from PIL import Image, ImageOps
 
 
 def prepareImage(img):
-    newimg = Image.open(img).convert('L').resize((28, 28))
-    newimg = ImageOps.invert(newimg)
-    mnist = np.array(newimg).reshape(1, 28, 28)
-    return mnist / 255.0
+    return np.array(ImageOps.invert(Image.open(img).convert(
+        'L').resize((28, 28)))).reshape(1, 28, 28) / 255.0
+
+
+def toImagePreviewArray(img):
+    return np.array(ImageOps.invert(Image.open(img).convert('L').resize((28, 28)))).tolist()
