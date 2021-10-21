@@ -1,5 +1,5 @@
 from flask_cors import CORS, cross_origin
-from scripts.prepare import prepareImage, toImagePreviewArray
+from scripts.prepare import prepareImage, toBase64String
 from flask import Flask, request, jsonify
 import numpy as np
 import tensorflow as tf
@@ -16,7 +16,8 @@ CORS(app, support_credentials=True)
 @cross_origin(origin='*')
 def runModel():
     file = request.files['file']
-    prepared_file = toImagePreviewArray(file)
+    prepared_file = toBase64String(file)
+    print(prepared_file)
     predicted = predict(file)
     top_prediction = labels[np.argmax(predicted)]
     formatted = format(predicted)
