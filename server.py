@@ -36,12 +36,12 @@ def isUp():
 def predict(file):
     prepared_file = prepareImage(file)
     result = model.predict(prepared_file)
-    return result
+    return result[0]
 
 def predictFlipped(file):
     prepared_file = prepareFlip(file)
     result = model.predict(prepared_file)
-    return result
+    return result[0]
 
 
 def format(arr):
