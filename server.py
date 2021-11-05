@@ -1,5 +1,5 @@
 from flask_cors import CORS, cross_origin
-from scripts.img_utils import prepareImage, toBase64String
+from scripts.img_utils import prepareImage, toBase64String, flipImage
 from scripts.prediction import Prediction
 from flask import Flask, request, jsonify
 import numpy as np
@@ -18,8 +18,9 @@ CORS(app, support_credentials=True)
 def runModel():
     file = request.files['file']
     prepared_file = toBase64String(file)
-    print(prepared_file)
-    o_predicted, f_predicted = predict(file)
+    flipped_file = flipImage(file)
+    o_predicted = predict(file)
+    f_predicted = predict(flipped_file)
     o_top_prediction = labels[np.argmax(o_predicted)]
     f_top_prediction = labels[np.argmax(f_predicted)]
     o_formatted = format(o_predicted)
@@ -36,12 +37,9 @@ def isUp():
 def predict(file):
 
     prepared_file = prepareImage(file)
-    flipped_prepared = np.fliplr(prepared_file)
+    result = model.predict(prepared_file)
 
-    original_result = model.predict(prepared_file)
-    flipped_result = model.predict(flipped_prepared)
-
-    return [original_result[0], flipped_result[0]]
+    return result
 
 
 def format(arr):
