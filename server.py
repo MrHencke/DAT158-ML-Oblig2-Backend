@@ -19,7 +19,7 @@ def runModel():
     file = request.files['file']
     prepared_file = toBase64String(file)
     o_predicted = predict(file)
-    f_predicted = predict(file)
+    f_predicted = predictFlipped(file)
     o_top_prediction = labels[np.argmax(o_predicted)]
     f_top_prediction = labels[np.argmax(f_predicted)]
     o_formatted = format(o_predicted)
