@@ -19,10 +19,12 @@ def runModel():
     file = request.files['file']
     prepared_file = toBase64String(file)
     print(prepared_file)
-    predicted = predict(file)
-    top_prediction = labels[np.argmax(predicted)]
-    formatted = format(predicted)
-    return jsonify(top_prediction=top_prediction, certainties=formatted, processed_image=prepared_file)
+    o_predicted, f_predicted = predict(file)
+    o_top_prediction = labels[np.argmax(o_predicted)]
+    f_top_prediction = labels[np.argmax(f_predicted)]
+    o_formatted = format(o_predicted)
+    f_formatted = format(f_predicted)
+    return jsonify(o_top_prediction=o_top_prediction, f_top_prediction=f_top_prediction, o_certainties=o_formatted, f_certainties=f_formatted, processed_image=prepared_file)
 
 
 @app.route('/api/up', methods=['GET'])
@@ -32,13 +34,14 @@ def isUp():
 
 
 def predict(file):
+
     prepared_file = prepareImage(file)
+    flipped_prepared = np.fliplr(prepared_file)
 
-    result = model.predict(prepared_file)
+    original_result = model.predict(prepared_file)
+    flipped_result = model.predict(flipped_prepared)
 
-    output = result[0]
-
-    return output
+    return [original_result[0], flipped_result[0]]
 
 
 def format(arr):
@@ -46,8 +49,8 @@ def format(arr):
     output = []
     
     for key, data in zip(labels, decimals):
-        output.append(Prediction(key, data).serialize())
-    
+        if data > 1:
+            output.append(Prediction(key, data).serialize())
     return output
 
 labels = ["T-shirt/top", "Trouser", "Pullover", "Dress",
