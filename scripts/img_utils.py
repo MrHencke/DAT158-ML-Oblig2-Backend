@@ -8,8 +8,10 @@ def prepareImage(img):
     return np.array(ImageOps.invert(Image.open(img).convert(
         'L').resize((28, 28)))).reshape(1, 28, 28) / 255.0
 
-def flipImage(img):
-    return Image.open(img).transpose(Image.FLIP_LEFT_RIGHT)
+def prepareFlip(img):
+    return np.array(ImageOps.invert(Image.open(img).transpose(Image.FLIP_LEFT_RIGHT)
+    .convert('L').resize((28, 28)))).reshape(1, 28, 28) / 255.0
+
 
 def toBase64String(img):
     return imgToB64(ImageOps.invert(Image.open(img).convert('L').resize((28, 28))))
