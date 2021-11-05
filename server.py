@@ -22,9 +22,10 @@ def runModel():
     f_predicted = predictFlipped(file)
     o_top_prediction = labels[np.argmax(o_predicted)]
     f_top_prediction = labels[np.argmax(f_predicted)]
+    top_prediction = o_top_prediction if np.amax(o_predicted) > np.amax(f_predicted) else f_top_prediction
     o_formatted = format(o_predicted)
     f_formatted = format(f_predicted)
-    return jsonify(o_top_prediction=o_top_prediction, f_top_prediction=f_top_prediction, o_certainties=o_formatted, f_certainties=f_formatted, processed_image=prepared_file)
+    return jsonify(o_top_prediction=o_top_prediction, f_top_prediction=f_top_prediction, top_prediction=top_prediction, o_certainties=o_formatted, f_certainties=f_formatted, processed_image=prepared_file)
 
 
 @app.route('/api/up', methods=['GET'])
