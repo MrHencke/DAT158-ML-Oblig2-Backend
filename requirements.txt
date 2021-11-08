@@ -13,3 +13,4 @@ wincertstore
 Pillow
 flask-cors
 tensorflow-cpu
+fleep
