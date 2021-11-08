@@ -1,22 +1,45 @@
-from flask_cors import CORS, cross_origin
-from scripts.img_utils import prepareImage, toBase64String, prepareFlip
-from scripts.prediction import Prediction
-from flask import Flask, request, jsonify, Response
-import numpy as np
-import tensorflow as tf
-from tensorflow import keras
-import fleep
+#Imports
+from flask_cors import CORS, cross_origin # Used for allowing cross origin requests
+from scripts.img_utils import prepareImage, toBase64String, prepareFlip # Scripts for image preparation
+from scripts.prediction import Prediction # JSON-compliant serializer class
+from flask import Flask, request, jsonify, Response # Used for basic REST-server functionality
+import numpy as np # Used for arrays and array-functions
+from tensorflow import keras # Used for the machine learning model
+import fleep # Used for checking headers of uploaded files
 
+#Importing the model, from our models folder.
 model = keras.models.load_model("./model/keras")
 
-
+#Boilerplate flask app initialization.
 app = Flask(__name__)
+
+#Enabling CORS, needed as backend and frontend is split.
 CORS(app, support_credentials=True)
 
 
 @app.route('/api/ml', methods=['POST'])
 @cross_origin(origin='*')
 def runModel():
+    """
+    Runs our model on a given image, sent from the frontend.
+
+    Args:
+        File (JPG | PNG | JFIF): A raster image, from the request.
+        
+    Returns:
+        if legal input:
+            Response (JSON): Returns 6 objects. Objects prefixed with f or o are mirrored.
+                        o_top_prediction (String): Gives top prediction for the original picture.
+                        f_top_prediction (String): Gives top prediction for the flipped picture.
+                        top_prediction (String): Gives the top overall prediction between the original and flipped image.
+                        o_certainties (Numpy): Gives an array with percantage certainties for what the original image is.
+                        f_certainties (Numpy): Gives an array with percantage certainties for what the flipped image is.
+                        processed_image (String): A base64 encoded string with the image data of the processed image.
+        else:
+            Response (JSON): Returns two objects
+                response.text (String): An error message.
+                response.status (number): Standard bad request number.
+    """
     file = request.files['file']
     info = fleep.get(file.read(128))
     if info.type_matches("raster-image"):
@@ -38,21 +61,54 @@ def runModel():
 @app.route('/api/up', methods=['GET'])
 @cross_origin(origin='*')
 def isUp():
+    """
+    Returns a "u"-string to signify that the backend is up. It is the least demanding check we could think of to test the up-status of the backend.
+
+    Returns:
+        Response (String): The letter "u".
+    """
     return "u"
 
 
 def predict(file):
+    """
+    Prepares the image, then uses the ML-model to predict on the original raster image.
+
+    Args:
+        file (File-Stream): A File-Stream of a Raster Image
+
+    Returns:
+        result[0] (numpy array): A numpy array containing the certainties for an image being a specific object.
+    """
     prepared_file = prepareImage(file)
     result = model.predict(prepared_file)
     return result[0]
 
 def predictFlipped(file):
+    """
+    Prepares and flips the image, then uses the ML-model to predict on the flipped raster image.
+
+    Args:
+        file (File-Stream): A File-Stream of a Raster Image
+
+    Returns:
+        result[0] (numpy array): A numpy array containing the certainties for an image being a specific object.
+    """
     prepared_file = prepareFlip(file)
     result = model.predict(prepared_file)
     return result[0]
 
 
 def format(arr):
+    """
+    Formats the array, drops low values and labels the items.
+
+    Args:
+        arr (numpy array): An array of certainties ranging from 0 to 1.
+
+    Returns:
+        ouput (list): A list of all certainties over 1%, with corresponding labels.
+    """
     decimals = map(lambda x: round((x * 100), 2), arr)
     output = []
     
@@ -61,8 +117,11 @@ def format(arr):
             output.append(Prediction(key, data).serialize())
     return output
 
+
+#A list of labels, corresponding to the indexes used by the model.
 labels = ["T-shirt/top", "Trouser", "Pullover", "Dress",
           "Coat", "Sandal", "Shirt", "Sneaker", "Bag", "Ankle boot"]
 
+#Instructions if the app is ran directly.
 if __name__ == '__main__':
     app.run(debug=True)

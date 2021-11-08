@@ -1,8 +1,0 @@
-Flesh out frontend with guard if uploaded file is image, check size too
-Flip image hortizontally on backend, take best result
-Train more models
-Streamline data delivery on backend
-Jsonify IO on backend
-Graph certainty on frontend
-Styling on frontend
-Rebase code.
