@@ -18,7 +18,7 @@ def prepareImage(img):
     im.filter(ImageFilter.MedianFilter())
     enhancer = ImageEnhance.Contrast(im)
     im = enhancer.enhance(2)
-    im = ImageOps.invert().convert('L').resize((28, 28))
+    im = ImageOps.invert(im).convert('L').resize((28, 28))
     return np.array(im).reshape(1, 28, 28, 1) / 255.0
 
 
