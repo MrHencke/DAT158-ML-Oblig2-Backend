@@ -1,19 +1,22 @@
-#Imports
-from flask_cors import CORS, cross_origin # Used for allowing cross origin requests
-from scripts.img_utils import prepareImage, toBase64String, prepareFlip # Scripts for image preparation
-from scripts.prediction import Prediction # JSON-compliant serializer class
-from flask import Flask, request, jsonify, Response # Used for basic REST-server functionality
-import numpy as np # Used for arrays and array-functions
-from tensorflow import keras # Used for the machine learning model
-import fleep # Used for checking headers of uploaded files
+# Imports
+# Used for allowing cross origin requests
+from flask_cors import CORS, cross_origin
+# Scripts for image preparation
+from scripts.img_utils import prepareImage, toBase64String, prepareFlip
+from scripts.prediction import Prediction  # JSON-compliant serializer class
+# Used for basic REST-server functionality
+from flask import Flask, request, jsonify, Response
+import numpy as np  # Used for arrays and array-functions
+from tensorflow import keras  # Used for the machine learning model
+import fleep  # Used for checking headers of uploaded files
 
-#Importing the model, from our models folder.
-model = keras.models.load_model("./model/keras")
+# Importing the model, from our models folder.
+model = keras.models.load_model("./model/cnn")
 
-#Boilerplate flask app initialization.
+# Boilerplate flask app initialization.
 app = Flask(__name__)
 
-#Enabling CORS, needed as backend and frontend is split.
+# Enabling CORS, needed as backend and frontend is split.
 CORS(app, support_credentials=True)
 
 
@@ -25,7 +28,7 @@ def runModel():
 
     Args:
         File (JPG | PNG | JFIF): A raster image, from the request.
-        
+
     Returns:
         if legal input:
             Response (JSON): Returns 6 objects. Objects prefixed with f or o are mirrored.
@@ -48,15 +51,17 @@ def runModel():
         f_predicted = predictFlipped(file)
         o_top_prediction = labels[np.argmax(o_predicted)]
         f_top_prediction = labels[np.argmax(f_predicted)]
-        top_prediction = o_top_prediction if np.amax(o_predicted) > np.amax(f_predicted) else f_top_prediction
+        top_prediction = o_top_prediction if np.amax(
+            o_predicted) > np.amax(f_predicted) else f_top_prediction
         o_formatted = format(o_predicted)
         f_formatted = format(f_predicted)
         return jsonify(o_top_prediction=o_top_prediction, f_top_prediction=f_top_prediction, top_prediction=top_prediction, o_certainties=o_formatted, f_certainties=f_formatted, processed_image=prepared_file)
     else:
-      return Response(
-        "Nice try, but that is not an image",
-        status=400,
-    )
+        return Response(
+            "Nice try, but that is not an image",
+            status=400,
+        )
+
 
 @app.route('/api/up', methods=['GET'])
 @cross_origin(origin='*')
@@ -83,6 +88,7 @@ def predict(file):
     prepared_file = prepareImage(file)
     result = model.predict(prepared_file)
     return result[0]
+
 
 def predictFlipped(file):
     """
@@ -111,17 +117,17 @@ def format(arr):
     """
     decimals = map(lambda x: round((x * 100), 2), arr)
     output = []
-    
+
     for key, data in zip(labels, decimals):
         if data > 1:
             output.append(Prediction(key, data).serialize())
     return output
 
 
-#A list of labels, corresponding to the indexes used by the model.
+# A list of labels, corresponding to the indexes used by the model.
 labels = ["T-shirt/top", "Trouser", "Pullover", "Dress",
           "Coat", "Sandal", "Shirt", "Sneaker", "Bag", "Ankle boot"]
 
-#Instructions if the app is ran directly.
+# Instructions if the app is ran directly.
 if __name__ == '__main__':
     app.run(debug=True)

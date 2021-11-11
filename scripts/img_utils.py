@@ -15,7 +15,7 @@ def prepareImage(img):
         (Numpy Array): A MNIST-compliant grayscaled image
     """
     return np.array(ImageOps.invert(Image.open(img).convert(
-        'L').resize((28, 28)))).reshape(1, 28, 28) / 255.0
+        'L').resize((28, 28)))).reshape(1, 28, 28, 1) / 255.0
 
 
 def prepareFlip(img):
@@ -29,7 +29,7 @@ def prepareFlip(img):
         (Numpy Array): A MNIST-compliant grayscaled image
     """
     return np.array(ImageOps.invert(Image.open(img).transpose(Image.FLIP_LEFT_RIGHT)
-    .convert('L').resize((28, 28)))).reshape(1, 28, 28) / 255.0
+                                    .convert('L').resize((28, 28)))).reshape(1, 28, 28, 1) / 255.0
 
 
 def toBase64String(img):
@@ -43,6 +43,7 @@ def toBase64String(img):
         (String): A base64 encoded string of a MNIST-compliant image.
     """
     return imgToB64(ImageOps.invert(Image.open(img).convert('L').resize((28, 28))))
+
 
 def imgToB64(image):
     """
