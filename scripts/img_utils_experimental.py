@@ -6,7 +6,7 @@ from PIL import Image, ImageOps, ImageFilter, ImageEnhance
 
 def prepareImage(img):
     """
-    Converts a given raster image to the MNIST-format
+    Converts and reduces noise in a given raster image to the MNIST-format
 
     Args:
         img (JPG | JFIF | PNG): A raster image
@@ -24,7 +24,7 @@ def prepareImage(img):
 
 def prepareFlip(img):
     """
-    Flips, then converts a given raster image to the MNIST-format
+    Flips, reduces noise, then converts a given raster image to the MNIST-format
 
     Args:
         img (JPG | JFIF | PNG): A raster image
@@ -36,7 +36,7 @@ def prepareFlip(img):
     im.filter(ImageFilter.MedianFilter())
     enhancer = ImageEnhance.Contrast(im)
     im = enhancer.enhance(2)
-    im = ImageOps.invert().convert('L').resize((28, 28))
+    im = ImageOps.invert(im).convert('L').resize((28, 28))
     return np.array(im).reshape(1, 28, 28, 1) / 255.0
 
 
