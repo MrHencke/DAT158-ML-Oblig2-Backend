@@ -14,3 +14,4 @@ Pillow
 flask-cors
 tensorflow-cpu
 fleep
+webp

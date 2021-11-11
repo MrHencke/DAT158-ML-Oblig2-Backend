@@ -2,7 +2,7 @@
 # Used for allowing cross origin requests
 from flask_cors import CORS, cross_origin
 # Scripts for image preparation
-from scripts.img_utils import prepareImage, toBase64String, prepareFlip
+from scripts.img_utils_experimental import prepareImage, toBase64String, prepareFlip
 from scripts.prediction import Prediction  # JSON-compliant serializer class
 # Used for basic REST-server functionality
 from flask import Flask, request, jsonify, Response
@@ -54,10 +54,10 @@ def runModel():
         top_prediction = o_top_prediction if np.amax(
             o_predicted) > np.amax(f_predicted) else f_top_prediction
         o_formatted = format(o_predicted)
-        f_formatted = format(f_predicted)
         if (np.abs(100*(np.amax(o_predicted) - np.amax(f_predicted)) < 3) and o_top_prediction == f_top_prediction):
             return jsonify(top_prediction=top_prediction, o_certainties=o_formatted, processed_image=prepared_file)
         else:
+            f_formatted = format(f_predicted)
             return jsonify(o_top_prediction=o_top_prediction, f_top_prediction=f_top_prediction, top_prediction=top_prediction, o_certainties=o_formatted, f_certainties=f_formatted, processed_image=prepared_file)
     else:
         return Response(
