@@ -107,7 +107,7 @@ def format(arr):
         arr (numpy array): An array of certainties ranging from 0 to 1.
 
     Returns:
-        ouput (list): A list of all certainties over 1%, with corresponding labels.
+        output (list): A list of all certainties over 1%, with corresponding labels.
     """
     decimals = map(lambda x: round((x * 100), 2), arr)
     output = []
