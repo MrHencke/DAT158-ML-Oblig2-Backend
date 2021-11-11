@@ -55,7 +55,10 @@ def runModel():
             o_predicted) > np.amax(f_predicted) else f_top_prediction
         o_formatted = format(o_predicted)
         f_formatted = format(f_predicted)
-        return jsonify(o_top_prediction=o_top_prediction, f_top_prediction=f_top_prediction, top_prediction=top_prediction, o_certainties=o_formatted, f_certainties=f_formatted, processed_image=prepared_file)
+        if np.abs(100*(np.amax(o_predicted) - np.amax(f_predicted)) < 3 & o_top_prediction == f_top_prediction):
+            return jsonify(top_prediction=top_prediction, o_certainties=o_formatted, processed_image=prepared_file)
+        else:
+            return jsonify(o_top_prediction=o_top_prediction, f_top_prediction=f_top_prediction, top_prediction=top_prediction, o_certainties=o_formatted, f_certainties=f_formatted, processed_image=prepared_file)
     else:
         return Response(
             "Nice try, but that is not an image",
